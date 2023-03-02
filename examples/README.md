@@ -2,10 +2,14 @@
 
 An example script is provided here: [example.py](example.py).
 
+## System requirement ##
+
+- [Python](https://www.python.org/downloads/) version `>=3.10` (currently tested on version `3.11`).
+
 ## Usage ##
 
 The intended use of is to `pip`-install the code in this repository as a package.
-For installation and usage follow the following steps:
+For installation and usage follow the following steps:[^1]
 
 1. In a bash terminal call
 
@@ -20,7 +24,7 @@ For installation and usage follow the following steps:
     ```
 
 Alternative, esp. for those who prefer to work with the code in an open source manner (e.g. to modify parts of it),
-one can clone the repository and run the example script as follows:
+one can clone the repository and run the example script as follows:[^1]
 
 1. Clone or download this repository.
 
@@ -32,7 +36,7 @@ one can clone the repository and run the example script as follows:
 
     or `just build-requirements`
     or `just build`
-    for those with the [justfile](https://github.com/casey/just) tool.[^1]
+    for those with the [justfile](https://github.com/casey/just) tool.[^2]
 
 3. In the [examples](.) folder run
 
@@ -51,4 +55,5 @@ the following plots in the [./examples/out](out) folder:
 
 ---
 
-[^1]: This step is only needed once.
+[^1]: Windows users should use `py -3` instead of `python3`.
+[^2]: This step is only needed once.

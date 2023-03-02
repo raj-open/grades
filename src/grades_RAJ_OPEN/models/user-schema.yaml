@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  version: x.y.z
+  title: Schemata for user config.
+  description: |-
+    Schemata for models for use by user.
+servers:
+  - url: "."
+paths: {}
+components:
+  schemas:
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Data
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Case:
+      description: |-
+        User config for data in case.
+      type: object
+      required:
+        - title
+        - path-input
+        - path-output
+      properties:
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Input/Output options
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        path-input:
+          description: |-
+            Path to csv input file (including filename and extension).
+          type: string
+          pattern: '^[^\\\/]+([\\\/][^\\\/]+)*(\.[^\\\/]+)?$'
+        path-output:
+          description: |-
+            Path to output file (including filename and extension).
+          type: string
+          pattern: '^[^\\\/]+([\\\/][^\\\/]+)*(\.[^\\\/]+)?$'
+        table-config:
+          description: |-
+            Configuration of table.
+          $ref: "#/components/schemas/TableConfig"
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Grade options
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        grade-schema:
+          description: |-
+            Key to grades as list.
+
+            **NOTE:** Sort this from _highest_ to _lowest_ grade!
+          type: array
+          items:
+            $ref: "#/components/schemas/Grade"
+        fail-grades:
+          description: |-
+            Value(s) of fail grade.
+          type: array
+          items:
+            anyOf:
+              - type: number
+              - type: string
+              - type: integer
+          default: []
+        remove-fail:
+          description: |-
+            Whether to filter out failing grades.
+          type: boolean
+          default: false
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Plot options
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        title:
+          description: |-
+            Title of plot.
+          example: 'Economics 1 Wintersemester - cohort {N}'
+          type: string
+        label-frequency:
+          description: |-
+            Label for axis for frequency.
+          type: string
+          default: 'Frequency'
+        label-frequency-relative:
+          description: |-
+            Label for axis for frequency.
+          type: string
+          default: 'Frequency (%)'
+        label-grades:
+          description: |-
+            Label for axis for grades.
+          type: string
+          default: 'Grades'
+        label-points:
+          description: |-
+            Label for axis for points.
+          type: string
+          default: 'Points'
+        plot-orientation:
+          $ref: "#/components/schemas/PLOTORIENTATION"
+          default: HORIZONTAL
+        as-grades:
+          description: |-
+            Whether to present data by grades.
+
+            - if `True` data presented by grades-.
+            - if `False` data presented by points but grouped by grades.
+          type: boolean
+          default: false
+        relative:
+          description: |-
+            Whether to present histogram counts as absolute or relative frequencies.
+          type: boolean
+          default: true
+        frequency-range:
+          description: |-
+            Limits of frequency axis.
+          type: array
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+      additionalProperties: false
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # TableConfig
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TableConfig:
+      description: |-
+        Structure of table config
+      type: object
+      properties:
+        offset:
+          description: |-
+            Number of unusable rows before the table begins.
+          type: integer
+          default: 0
+        sep:
+          description: |-
+            Symbol used for delimiter in table.
+          type: string
+          default: ";"
+        decimal:
+          description: |-
+            Symbol used for decimal for floating numbers in table.
+          type: string
+          default: "."
+        columns:
+          description: |-
+            Names of columns.
+          $ref: "#/components/schemas/ColumnsConfig"
+      additionalProperties: false
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ColumnsConfig
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ColumnsConfig:
+      description: |-
+        Names of columns.
+      type: object
+      properties:
+        points:
+          description: |-
+            Names of column containing points.
+          type: string
+          default: "points"
+        grade:
+          description: |-
+            Names of column containing grades.
+          type: string
+          default: "grade"
+      additionalProperties: false
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Grade
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Grade:
+      description: |-
+        Structure of a grade.
+      type: object
+      required:
+        - grade
+        - min
+        - max
+      properties:
+        grade:
+          description: |-
+            Label of grade (can be number or string).
+          anyOf:
+            - type: integer
+            - type: number
+            - type: string
+        min:
+          description: |-
+            Minimum value of points required for grade.
+          type: number
+        max:
+          description: |-
+            Maximum value of points required for grade.
+          type: number
+        include-min:
+          description: |-
+            Whether minimum value of points is included.
+          type: boolean
+          default: true
+        include-max:
+          description: |-
+            Whether maximum value of points is included.
+          type: boolean
+          default: false
+      additionalProperties: false
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # ENUM Plot Orientation
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    PLOTORIENTATION:
+      description: |-
+        An enumeration of possible options for mode
+      type: integer
+      enum:
+        - HORIZONTAL
+        - VERTICAL
+      x-enum-varnames:
+        - horizontal
+        - vertical
+      x-enum-descriptions:
+        - 'Orient histogram plot horizontally'
+        - 'Orient histogram plot vertically'
+      default: HORIZONTAL

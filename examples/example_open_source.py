@@ -17,7 +17,7 @@ os.chdir(os.path.join(os.path.dirname(__file__), '..'));
 sys.path.insert(0, os.getcwd());
 
 # ensure that this is installed from the source code and not the pip libraries:
-from src.grades_RAJ_OPEN import *;
+from src.r_open_grades import *;
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # EXECUTION

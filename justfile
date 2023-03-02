@@ -18,7 +18,7 @@ PYTHON := if os_family() == "windows" { "py -3" } else { "python3" }
 GEN_MODELS := "datamodel-codegen"
 GEN_MODELS_DOCUMENTATION := "openapi-generator"
 
-PROJECT_NAME := "grades_RAJ_OPEN"
+PROJECT_NAME := "r_open_grades"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Macros

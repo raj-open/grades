@@ -1,5 +1,5 @@
 [project]
-name = 'grades_RAJ_OPEN'
+name = 'r_open_grades'
 version = '0.0.0'
 description = 'A small package that produces plots of grades from csv files'
 authors = [
@@ -73,7 +73,7 @@ test = [
 ]
 dev = [
     # NOTE: depends on name of project!
-    'grades_RAJ_OPEN[test]',
+    'r_open_grades[test]',
     # further modules
     'datamodel-code-generator>=0.17.1',
     'openapi-generator-cli>=4.3.1',

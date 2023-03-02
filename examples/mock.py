@@ -21,7 +21,7 @@ import pandas as pd;
 import shortuuid;
 
 # ensure that this is installed from the source code and not the pip libraries:
-from src.grades_RAJ_OPEN import *;
+from src.r_open_grades import *;
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # CONSTANTS

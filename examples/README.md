@@ -8,7 +8,7 @@ For installation and usage follow the following steps:
 1. In a bash terminal call
 
     ```bash
-    python3 -m pip install git+https://github.com/raj-open/grades.git#egg=grades
+    python3 -m pip install git+https://github.com/raj-open/grades.git
     ```
 
 2. Within the [./examples](.) folder call

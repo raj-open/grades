@@ -18,6 +18,7 @@ PYTHON := if os_family() == "windows" { "py -3" } else { "python3" }
 GEN_MODELS := "datamodel-codegen"
 GEN_MODELS_DOCUMENTATION := "openapi-generator"
 
+REPO := "https://github.com/raj-open/grades.git"
 PROJECT_NAME := "r_open_grades"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,11 +163,12 @@ dist:
 
 create-mock-data:
     @{{PYTHON}} examples/mock.py
+install-package:
+    @{{PYTHON}} -m pip install git+{{REPO}}
 examples:
     @echo "Run open source example:"
     @- {{PYTHON}} examples/example_open_source.py
     @echo "Run packaged example:"
-    @{{PYTHON}} -m pip install --upgrade {{PROJECT_NAME}}
     @- cd examples && {{PYTHON}} example.py
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

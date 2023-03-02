@@ -45,7 +45,7 @@ def output_plot(
     mplot.title(title.format(N=N), loc='center', fontdict={'size': 18, 'family': 'Calibri'});
     mplot.margins(x=0, y=0);
 
-    values: dict[str, tuple[np.ndarray, int]] = dict();
+    objects: dict[str, tuple[int, np.ndarray, float]] = dict();
     # ensure groups are sorted as in schema (if provided):
     if grade_schema is not None:
         labels = [ s.grade for s in grade_schema ];
@@ -57,7 +57,7 @@ def output_plot(
         if as_grades:
             match plot_orientation:
                 case PLOTORIENTATION.vertical:
-                    axs.bar(
+                    container = axs.bar(
                         [ label ],
                         [ n/N if relative else n ],
                         width = [ 0.5 ],
@@ -65,9 +65,14 @@ def output_plot(
                         alpha = 0.5,
                         align = 'center',
                     );
+                    object: Rectangle = container[0];
+                    (x, y) = object.get_xy();
+                    dx = object.get_width();
+                    dy = object.get_height();
+                    objects[label] = (n, np.asarray([x, x+dx]), y + dy);
                 # case PLOTORIENTATION.horizontal:
                 case _:
-                    axs.barh(
+                    container = axs.barh(
                         [ label ],
                         [ n/N if relative else n ],
                         height = [ 0.5 ],
@@ -75,12 +80,17 @@ def output_plot(
                         alpha = 0.5,
                         align = 'center',
                     );
+                    object: Rectangle = container[0];
+                    (x, y) = object.get_xy();
+                    dx = object.get_width();
+                    dy = object.get_height();
+                    objects[label] = (n, np.asarray([y, y + dy]), x + dx);
         else:
             points = group['points'];
             _, bins, _ = axs.hist(
                 # points[:-1],
                 points,
-                weights = ([1./N] if relative else [1])*n,
+                weights = ([1./N] if relative else [1]) * n,
                 label = label,
                 orientation = 'vertical' if plot_orientation == PLOTORIENTATION.vertical else 'horizontal',
                 cumulative = 1,
@@ -89,7 +99,7 @@ def output_plot(
                 density = False,
                 align = 'mid'
             );
-            values[label] = (bins, n);
+            objects[label] = (n, bins, None);
 
     label_counts = label_frequency_relative if relative else label_frequency;
     label_categories = label_grades if as_grades else label_points;
@@ -125,14 +135,25 @@ def output_plot(
             else:
                 mplot.ylim(*value_range);
 
-    if not as_grades:
-        for label, (bins, n) in values.items():
-            frequency_range = frequency_range \
-                or (axs.get_ylim() if plot_orientation == PLOTORIENTATION.vertical else axs.get_xlim());
-            value = np.mean(bins);
-            freq = frequency_range[0]*0.95 + frequency_range[1]*0.05
-            (x, y) = (value, freq) if plot_orientation == PLOTORIENTATION.vertical else (freq, value);
-            axs.text(x=x, y=y, s=f'{n}', fontdict={'size': 12, 'family': 'Consolas'});
+    frequency_range = frequency_range \
+        or (axs.get_ylim() if plot_orientation == PLOTORIENTATION.vertical else axs.get_xlim());
+
+    count_positions = [ pos**2 for _, _, pos in objects.values() if pos is not None ];
+    rel = np.sqrt(np.mean(count_positions)) if len(count_positions) > 0 else 0;
+    for label, (n, category_positions, count_position) in objects.items():
+        category_position = np.mean(category_positions);
+        count_position = count_position or (frequency_range[0]*0.95 + frequency_range[1]*0.05);
+        count_position = count_position + 0.05 * rel;
+        (x, y) = (category_position, count_position) \
+            if plot_orientation == PLOTORIENTATION.vertical \
+            else (count_position, category_position);
+        axs.annotate(
+            text = f'{n}',
+            xy = (x, y),
+            ha = 'center',
+            va = 'center',
+        );
+        # axs.text(x=x, y=y, s=f'{n}', fontdict={'size': 12, 'family': 'Consolas'}, );
 
     if relative:
         match plot_orientation:

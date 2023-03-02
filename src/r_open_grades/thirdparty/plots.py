@@ -8,8 +8,9 @@
 from matplotlib import pyplot as mplot;
 from matplotlib import colors as mcolours;
 from matplotlib import ticker as mticker;
-from matplotlib.figure import Figure;
 from matplotlib.axes import Axes;
+from matplotlib.figure import Figure;
+from matplotlib.patches import Rectangle;
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # EXPORTS
@@ -18,6 +19,7 @@ from matplotlib.axes import Axes;
 __all__ = [
     'Axes',
     'Figure',
+    'Rectangle',
     'mcolours',
     'mplot',
     'mticker',

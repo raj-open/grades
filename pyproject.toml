@@ -1,0 +1,111 @@
+[project]
+name = 'grades_RAJ_OPEN'
+version = '0.0.0'
+description = 'A small package that produces plots of grades from csv files'
+authors = [
+    { name = 'raj-open', email='raj-open@noreply.users.github.com' },
+]
+maintainers = [
+    { name = 'raj-open', email='raj-open@noreply.users.github.com' },
+]
+license = { file = 'LICENCE' }
+readme = 'README.md'
+requires-python = '>=3.10'
+keywords = [
+    'python',
+    'plots',
+    'histogram',
+    'csv',
+]
+# cf. https://pypi.org/classifiers
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Environment :: Console',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+# NOTE: cf. requirements.txt
+# NOTE do not use == in pyproject.toml only in requirements.txt
+dependencies = [
+    'pip>=22.3.1',
+    'wheel>=0.38.4',
+    # 'hatchling>=1.13.0',
+    'setuptools>=67.4.0',
+    # misc
+    'typing>=3.7.4.3',
+    'pathlib>=1.0.1',
+    'importlib>=1.0.4',
+    'shortuuid>=1.0.11',
+    # config
+    'pyyaml>=6.0',
+    'pydantic>=1.9.1',
+    # maths
+    'numpy>=1.24.2',
+    # data
+    'dataclasses>=0.6',
+    'pydantic>=1.10.5',
+    # tables, data frames, diagrams
+    'pandas>=1.5.3',
+    'matplotlib>=3.7.0',
+    'tabulate>=0.9.0',
+]
+
+[build-system]
+requires = [ 'setuptools>=67.4.0' ]
+build-backend = 'setuptools.build_meta'
+
+[project.urls]
+homepage = 'https://github.com/raj-open/grades'
+
+[project.optional-dependencies]
+# NOTE: cf. requirements.txt
+# Currently no way to have one source of truth.
+test = [
+    'coverage[toml]>=7.2.1',
+    'pytest>=7.2.1',
+    'pytest-cov>=4.0.0',
+    'pytest-lazy-fixture>=0.6.3',
+    'pytest-order>=1.0.1',
+    'testfixtures>=7.1.0',
+]
+dev = [
+    # NOTE: depends on name of project!
+    'grades_RAJ_OPEN[test]',
+    # further modules
+    'datamodel-code-generator>=0.17.1',
+    'openapi-generator-cli>=4.3.1',
+]
+
+[tool.pytest.ini_options]
+minversion = '7.2.1'
+testpaths = [
+    'tests',
+]
+python_files = [
+    '**/tests_*.py',
+]
+asyncio_mode = 'auto'
+filterwarnings = [
+    'error',
+    'ignore::UserWarning',
+    'ignore::DeprecationWarning',
+]
+# NOTE: appends (not prepends) flags:
+addopts = [
+    '--order-dependencies',
+    '--order-group-scope=module',
+    '--cache-clear',
+    '--verbose',
+    '--maxfail=1',
+    '-k test_',
+    # NOTE: will be ignored, if --cov not used (e.g. integration tests):
+    '--no-cov-on-fail',
+    '--cov-report=term',
+    '--cov-config=.coveragerc',
+    # NOTE: for development purposes only:
+    # '-s', # verbose print/err capturing disabled
+    # '--capture=tee-sys', # verbose print/err capturing enabled
+]

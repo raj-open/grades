@@ -45,7 +45,7 @@ if __name__ == '__main__':
             Grade(grade='E',  min=24.0, max=30.0, include_min=True, include_max=False),
             Grade(grade='U',  min=0.0,  max=24.0, include_min=True, include_max=False),
         ],
-        fail_grades = [ '5,0' ],
+        fail_grades = [ 'E', 'U' ],
         remove_fail = False,
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # PLOT OPTIONS

@@ -5,4 +5,5 @@ and produce plots of distributions of grades.
 
 ## Example usage ##
 
-See the [examples](./examples/) folder.
+An example script is provided here: [examples/example.py](examples/example.py),
+see [examples/README.md](examples/README.md) for more information.

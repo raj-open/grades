@@ -15,10 +15,11 @@ Use the package as follows:
 
 ```py
 from r_open_grades import *;
-
 case = Case(
-    path_input = 'examples/data/example-data.csv',
-    ... # use intellisense to see which other arguments are required.
+    path_input = 'path/to/your/data.csv',
+    path_output = 'path/to/desired/output.png',
+    # use intellisense to see other required/optional arguments
+    ...
 );
 run(case);
 ```

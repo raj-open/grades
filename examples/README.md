@@ -8,13 +8,13 @@ An example script is provided here: [example.py](example.py).
 
 ## Usage ##
 
-The intended use of is to `pip`-install the code in this repository as a package.
+The intended use is to install the code in this repository as a python package.
 For installation and usage follow the following steps:[^1]
 
 1. In a bash terminal call
 
     ```bash
-    python3 -m pip install git+https://github.com/raj-open/grades.git
+    python3 -m pip install git+https://github.com/raj-open/grades.git@main
     ```
 
 2. Within the [examples](.) folder call

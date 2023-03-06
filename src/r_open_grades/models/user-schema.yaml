@@ -19,7 +19,6 @@ components:
       required:
         - title
         - path-input
-        - path-output
       properties:
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Input/Output options
@@ -163,6 +162,12 @@ components:
             Names of column containing grades.
           type: string
           default: "grade"
+        dump-columns:
+          description: |-
+            Whether to remove all other columns.
+            If `true`, will only retain the points and grades columns.
+          type: boolean
+          default: false
       additionalProperties: false
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Grade

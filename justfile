@@ -163,13 +163,17 @@ dist:
 
 create-mock-data:
     @{{PYTHON}} examples/mock.py
-install-package:
-    @{{PYTHON}} -m pip install git+{{REPO}}
+install-package branch="main":
+    @{{PYTHON}} -m pip install git+{{REPO}}@{{branch}}
 examples:
-    @echo "Run open source example:"
-    @- {{PYTHON}} examples/example_open_source.py
+    @just examples-open-source
+    @just examples-package
+examples-package:
     @echo "Run packaged example:"
     @- cd examples && {{PYTHON}} example.py
+examples-open-source:
+    @echo "Run open source example:"
+    @- {{PYTHON}} examples/example_open_source.py
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # TARGETS: tests

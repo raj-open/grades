@@ -20,6 +20,11 @@ class ColumnsConfig(BaseModel):
 
     points: str = Field('points', description='Names of column containing points.')
     grade: str = Field('grade', description='Names of column containing grades.')
+    dump_columns: bool = Field(
+        False,
+        alias='dump-columns',
+        description='Whether to remove all other columns.\nIf `true`, will only retain the points and grades columns.',
+    )
 
 
 class Grade(BaseModel):
@@ -91,8 +96,8 @@ class Case(BaseModel):
         description='Path to csv input file (including filename and extension).',
         regex='^[^\\\\\\/]+([\\\\\\/][^\\\\\\/]+)*(\\.[^\\\\\\/]+)?$',
     )
-    path_output: str = Field(
-        ...,
+    path_output: Optional[str] = Field(
+        None,
         alias='path-output',
         description='Path to output file (including filename and extension).',
         regex='^[^\\\\\\/]+([\\\\\\/][^\\\\\\/]+)*(\\.[^\\\\\\/]+)?$',

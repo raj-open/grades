@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **pathMinusinput** | [**String**](string.md) | Path to csv input file (including filename and extension). | [default to null]
-**pathMinusoutput** | [**String**](string.md) | Path to output file (including filename and extension). | [default to null]
+**pathMinusoutput** | [**String**](string.md) | Path to output file (including filename and extension). | [optional] [default to null]
 **tableMinusconfig** | [**TableConfig**](TableConfig.md) |  | [optional] [default to null]
 **gradeMinusschema** | [**List**](Grade.md) | Key to grades as list.  **NOTE:** Sort this from _highest_ to _lowest_ grade! | [optional] [default to null]
 **failMinusgrades** | [**List**](anyOf&lt;number,string,integer&gt;.md) | Value(s) of fail grade. | [optional] [default to []]

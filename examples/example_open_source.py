@@ -38,7 +38,12 @@ if __name__ == '__main__':
             sep     = ';',
             decimal = ',',
             offset  = 0,
-            columns = ColumnsConfig(points='Score', grade='Note'),
+            columns = ColumnsConfig(
+                points = 'Score',
+                grade = 'Note',
+                # Default is `True` (= all unnecessary columns are removed).
+                dump_columns = True,
+            ),
         ),
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # GRADE OPTIONS
@@ -57,18 +62,18 @@ if __name__ == '__main__':
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # PLOT OPTIONS
         # NOTE: labels are optional
-        title = 'Microeconomic Principles I, 2023 - cohort {N}',
+        title = 'Microeconomic Principles I, 2023\ncohort size: {N}',
         label_frequency          = 'Number of students',
         label_frequency_relative = 'Percentage of students',
         label_grades             = 'Grade',
         label_points             = 'Total score',
-        plot_orientation = PLOTORIENTATION.vertical, # alternative: PLOTORIENTATION.horizontal
+        plot_orientation = PLOTORIENTATION.horizontal, # alternative: PLOTORIENTATION.vertical
         as_grades = False, # whether to present histogram in terms of grades or points
         relative  = True,
         # NOTE:
         # if `relative == True`, state frequency range in terms of probabilities.
         # otherwise state frequency irange in terms of values absolute counts:
-        frequency_range = [0, 0.45],
+        frequency_range = [0, 0.35],
     );
     # run the main proceedure on the case
     print('\nRun example on case 1:');
@@ -77,5 +82,14 @@ if __name__ == '__main__':
     # reuse case and change a few options:
     case.as_grades = True;
     case.path_output = 'examples/out/example-grades.png';
+    case.table_config.columns.dump_columns = False;
     print('\nRun example on case 2:');
-    run(case);
+    # NOTE:
+    # If `dump_columns = False` is used above,
+    # user can perform intermediate operations on `data` before plotting.
+    # To do this, instead of `run` call
+    #    1. `prepare_data`
+    #    2. `represent_data`
+    data = prepare_data(case=case);
+    data = data[data['Group'] != 'BEGINNER'];
+    fig, axs = represent_data(case=case, data=data);

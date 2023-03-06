@@ -18,6 +18,7 @@ sys.path.insert(0, os.getcwd());
 
 import numpy as np;
 import pandas as pd;
+import random;
 import shortuuid;
 
 # ensure that this is installed from the source code and not the pip libraries:
@@ -29,6 +30,7 @@ from src.r_open_grades import *;
 
 PATH_DATA = 'examples/data/example-data.csv';
 COLUMN_ID = 'Id';
+COLUMN_GROUP = 'Group';
 COLUMN_POINTS = 'Score';
 COLUMN_GRADE = 'Note';
 N = 100;
@@ -61,11 +63,12 @@ def compute_grade(x: float, schema: list[Grade]) -> float:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == '__main__':
+    # create groups
+    groups = np.asarray(random.choices(('BEGINNER', 'INTERMEDIATE', 'ADVANCED'), weights = (0.15, 0.6, 0.25), k = N));
     # create made up scores:
-    u = np.random.rand(N);
-    points = (u < 0.15) * np.random.normal(55, scale=5, size=N) \
-        + (0.15 <= u) * (u < 0.75) * np.random.normal(30, scale=7, size=N) \
-        + (0.75 <= u) * np.random.normal(15, scale=7, size=N);
+    points = (groups == 'ADVANCED') * np.random.normal(55, scale=5, size=N) \
+        + (groups == 'INTERMEDIATE') * np.random.normal(30, scale=7, size=N) \
+        + (groups == 'BEGINNER') * np.random.normal(15, scale=7, size=N);
     points = np.minimum(points, 60);
     points = np.maximum(points, 0);
     points = np.round(4*points)/4;
@@ -80,6 +83,7 @@ if __name__ == '__main__':
     # create data frame:
     data = pd.DataFrame({
         COLUMN_ID: [ create_uuid(length=8).upper() for _ in range(N) ],
+        COLUMN_GROUP: groups,
         COLUMN_POINTS: points,
         COLUMN_GRADE: grades,
     });

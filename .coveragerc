@@ -7,9 +7,9 @@ omit =
     # ignore tests folder
     tests/**
     # ignore thirdparty imports
-    thirdparty/**
+    src/*/thirdparty/**
     # ignore models folder (auto generated)
-    models/**
+    src/*/models/**
     # ignore __init__ files (only used for exports)
     **/__init__.py
     # ignore __archive__* files

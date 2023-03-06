@@ -6,7 +6,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 from .models.generated.user import *;
-from .run import *;
+from .methods import *;
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # EXPORTS
@@ -18,5 +18,7 @@ __all__ = [
     'Grade',
     'PLOTORIENTATION',
     'TableConfig',
+    'prepare_data',
+    'represent_data',
     'run',
 ];

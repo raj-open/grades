@@ -25,7 +25,7 @@ __all__ = [
 
 def output_plot(
     data: pd.DataFrame,
-    path_output: str,
+    path_output: Optional[str],
     title: str,
     label_frequency: str,
     label_frequency_relative: str,
@@ -37,33 +37,45 @@ def output_plot(
     frequency_range: Optional[list[float, float]],
     grade_schema: Optional[list[Grade]],
     **_
-):
+) -> tuple[Figure, Axes]:
     N = len(data);
     grouped = data.groupby('grade');
-
-    fig, axs = mplot.subplots(1, 1, constrained_layout=True);
-    mplot.title(title.format(N=N), loc='center', fontdict={'size': 18, 'family': 'Calibri'});
-    mplot.margins(x=0, y=0);
-
-    objects: dict[str, tuple[int, np.ndarray, float]] = dict();
     # ensure groups are sorted as in schema (if provided):
     if grade_schema is not None:
         labels = [ s.grade for s in grade_schema ];
         grouped = sorted(grouped, key = lambda x: (labels + [x[0]]).index(x[0]));
     grouped = [ (str(label), group) for label, group in grouped ];
-    # plot groups:
+
+    fig, axs = mplot.subplots(1, 1, constrained_layout=True);
+    mplot.title(title.format(N=N), loc='center', fontdict={'size': 18, 'family': 'Calibri'});
+    mplot.margins(x=0, y=0);
+    match plot_orientation:
+        case PLOTORIENTATION.vertical:
+            mplot.yticks(rotation=45, ha='right');
+        # case PLOTORIENTATION.horizontal:
+        case _:
+            mplot.xticks(rotation=-45, ha='left');
+
+    # plot groups
+    # NOTE: (currently) need to plot twice in order to make alpha of face + edge colours different.
+    objects: dict[str, tuple[int, np.ndarray, float]] = dict();
     for label, group in grouped:
         n = len(group);
         if as_grades:
+            points = [ label ];
+            weights = [ n/N if relative else n ];
+            h = 0.5;
             match plot_orientation:
                 case PLOTORIENTATION.vertical:
                     container = axs.bar(
-                        [ label ],
-                        [ n/N if relative else n ],
-                        width = [ 0.5 ],
-                        label = label,
-                        alpha = 0.5,
+                        points, weights, label = label, width = [ h ],
                         align = 'center',
+                        alpha = 0.5, edgecolor = None,
+                    );
+                    axs.bar(
+                        points, weights, width = [ h ],
+                        align = 'center',
+                        facecolor = "None", edgecolor = (0,0,0,1),
                     );
                     object: Rectangle = container[0];
                     (x, y) = object.get_xy();
@@ -73,12 +85,14 @@ def output_plot(
                 # case PLOTORIENTATION.horizontal:
                 case _:
                     container = axs.barh(
-                        [ label ],
-                        [ n/N if relative else n ],
-                        height = [ 0.5 ],
-                        label = label,
-                        alpha = 0.5,
+                        points, weights, label = label, height = [ h ],
                         align = 'center',
+                        alpha = 0.5, edgecolor = None,
+                    );
+                    axs.barh(
+                        points, weights, height = [ h ],
+                        align = 'center',
+                        facecolor = "None", edgecolor = (0,0,0,1),
                     );
                     object: Rectangle = container[0];
                     (x, y) = object.get_xy();
@@ -87,17 +101,17 @@ def output_plot(
                     objects[label] = (n, np.asarray([y, y + dy]), x + dx);
         else:
             points = group['points'];
+            weights = ([1./N] if relative else [1]) * n;
+            orientation = 'vertical' if plot_orientation == PLOTORIENTATION.vertical else 'horizontal';
             _, bins, _ = axs.hist(
-                # points[:-1],
-                points,
-                weights = ([1./N] if relative else [1]) * n,
-                label = label,
-                orientation = 'vertical' if plot_orientation == PLOTORIENTATION.vertical else 'horizontal',
-                cumulative = 1,
-                alpha = 0.5,
-                histtype = 'stepfilled',
-                density = False,
-                align = 'mid'
+                points, weights = weights, label = label, orientation = orientation,
+                cumulative = 1, histtype = 'stepfilled', density = False, align = 'mid',
+                alpha = 0.5, edgecolor = None,
+            );
+            axs.hist(
+                points, weights = weights, orientation = orientation,
+                cumulative = 1, histtype = 'stepfilled', density = False, align = 'mid',
+                facecolor = "None", edgecolor = (0,0,0,1), linewidth = 0.5,
             );
             objects[label] = (n, bins, None);
 
@@ -148,10 +162,9 @@ def output_plot(
             if plot_orientation == PLOTORIENTATION.vertical \
             else (count_position, category_position);
         axs.annotate(
-            text = f'{n}',
-            xy = (x, y),
-            ha = 'center',
-            va = 'center',
+            text = f'{n}', xy = (x, y),
+            ha = 'center' if plot_orientation == PLOTORIENTATION.vertical else 'left',
+            va = 'bottom' if plot_orientation == PLOTORIENTATION.vertical else 'center',
         );
         # axs.text(x=x, y=y, s=f'{n}', fontdict={'size': 12, 'family': 'Consolas'}, );
 
@@ -163,7 +176,8 @@ def output_plot(
             case _:
                 axs.xaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=2, symbol='%'));
 
-    axs.legend(loc='upper right', title=label_grades);
+    axs.legend(title=label_grades, loc='upper left', bbox_to_anchor=(1, 1));
     fig = axs.get_figure();
-    fig.savefig(path_output, bbox_inches='tight');
-    return;
+    if path_output is not None:
+        fig.savefig(path_output, bbox_inches='tight');
+    return fig, axs;

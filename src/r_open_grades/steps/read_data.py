@@ -24,7 +24,6 @@ __all__ = [
 def read_data(
     path_input: str,
     table_config: Optional[TableConfig],
-    grade_schema: Optional[list[Grade]],
     **_
 ) -> pd.DataFrame:
     if table_config is None:
@@ -46,7 +45,6 @@ def read_data(
     match (colname_points in colnames, colname_grade in colnames):
         case (True, True):
             data[colname_points] = pd.to_numeric(data[colname_points], errors='coerce');
-            data = data[[colname_points, colname_grade]];
         case (True, False):
             data[colname_points] = pd.to_numeric(data[colname_points], errors='coerce');
             data[colname_grade] = pd.NA;
@@ -56,7 +54,9 @@ def read_data(
             raise Exception(f'Table must contain at least one of the columns \x1b[1m[{colname_points}, {colname_grade}]\x1b[0m.');
         case _:
             pass;
-    data = data[[colname_points, colname_grade]];
+
+    if table_config.columns.dump_columns:
+        data = data[[colname_points, colname_grade]];
 
     # rename columns:
     data.rename(columns={colname_points: 'points', colname_grade: 'grade'}, inplace=True);

@@ -52,7 +52,7 @@ def format_data(
 
     # optionally remove fail grade/s:
     if remove_fail:
-        data_passed = data[data['grade'].isin(fail_grades)];
+        data_passed = data[~data['grade'].isin(fail_grades)];
         data = data_passed;
         data = data.reset_index(drop=True);
 

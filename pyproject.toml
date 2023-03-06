@@ -1,6 +1,6 @@
 [project]
 name = 'r_open_grades'
-version = '0.0.1'
+version = '0.0.2'
 description = 'A small package that produces plots of grades from csv files'
 authors = [
     { name = 'raj-open', email='raj-open@noreply.users.github.com' },
@@ -59,6 +59,11 @@ build-backend = 'setuptools.build_meta'
 
 [project.urls]
 homepage = 'https://github.com/raj-open/grades'
+
+[tool.setuptools.packages.find]
+where = [ 'src' ]
+include = [ 'r_open_grades*' ]
+namespaces = true
 
 [project.optional-dependencies]
 # NOTE: cf. requirements.txt

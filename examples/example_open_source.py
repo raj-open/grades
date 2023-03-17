@@ -36,7 +36,7 @@ if __name__ == '__main__':
         # NOTE: Ensure consistent usage of , or . for decimal in file!
         table_config = TableConfig(
             sep     = ';',
-            decimal = ',',
+            decimal = '.',
             offset  = 0,
             columns = ColumnsConfig(
                 points = 'Score',

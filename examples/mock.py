@@ -89,4 +89,4 @@ if __name__ == '__main__':
     });
     # write to csv:
     with open(PATH_DATA, 'w') as fp:
-        data.to_csv(fp, sep=';', decimal=',', index=False, na_rep='');
+        data.to_csv(fp, sep=';', decimal='.', index=False, na_rep='');

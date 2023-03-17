@@ -23,13 +23,13 @@ if __name__ == '__main__':
     case = Case(
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # INPUT/OUTPUT OPTIONS
-        path_input = 'examples/data/example-data.csv',
-        path_output = 'examples/out/example-scores.png',
+        path_input = 'data/example-data.csv',
+        path_output = 'out/example-scores.png',
         # optional configuration of input table:
         # NOTE: Ensure consistent usage of , or . for decimal in file!
         table_config = TableConfig(
             sep     = ';',
-            decimal = ',',
+            decimal = '.',
             offset  = 0,
             columns = ColumnsConfig(
                 points = 'Score',
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     # reuse case and change a few options:
     case.as_grades = True;
-    case.path_output = 'examples/out/example-grades.png';
+    case.path_output = 'out/example-grades.png';
     case.table_config.columns.dump_columns = False;
     print('\nRun example on case 2:');
     # NOTE:

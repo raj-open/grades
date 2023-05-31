@@ -31,7 +31,7 @@ one can clone the repository and run the example script as follows:[^1]
 2. Install the requirements via
 
     ```bash
-    python3 -m pip install -r requirement.txt
+    python3 -m pip install -r requirements.txt
     ```
 
     or `just build-requirements`

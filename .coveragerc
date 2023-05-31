@@ -3,18 +3,20 @@ source="."
 
 [report]
 show_missing = true
-omit =
+omit = [
     # ignore tests folder
-    tests/**
+    'tests/**',
     # ignore thirdparty imports
-    src/*/thirdparty/**
+    'src/*/thirdparty/**',
     # ignore models folder (auto generated)
-    src/*/models/**
+    'src/*/models/**',
     # ignore __init__ files (only used for exports)
-    **/__init__.py
+    '**/__init__.py',
     # ignore __archive__* files
-    **/__archive__*
+    '**/__archive__*',
+]
 # fail_under = 100 ## NOTE: reinclude this, when testing is added.
 precision = 1
-exclude_lines =
-    pragma: no cover
+exclude_lines = [
+    'pragma: no cover',
+]

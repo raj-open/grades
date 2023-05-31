@@ -139,6 +139,7 @@ build:
     @just check-system-requirements
     @just build-models
 build-requirements:
+    @{{PYTHON}} src/package.py
     @{{PYTHON}} -m pip install --disable-pip-version-check -r requirements.txt
 build-models:
     @echo "Generate data models from schemata."

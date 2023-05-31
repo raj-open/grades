@@ -147,7 +147,7 @@ build-documentation:
     @echo "Generate documentations data models from schemata."
     @just _delete-if-folder-exists "documentation"
     @just _create-folder-if-not-exists "documentation"
-    @- just _build-documentation-recursively "src/{{PROJECT_NAME}}/models" "documentation"
+    @- just _build-documentation-recursively "src/{{PROJECT_NAME}}/models" "documentation/models"
     @- just _clean-all-files "." ".openapi-generator*"
     @- just _clean-all-folders "." ".openapi-generator*"
 

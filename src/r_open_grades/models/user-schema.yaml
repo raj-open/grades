@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  version: x.y.z
+  version: 0.0.2a
   title: Schemata for user config.
   description: |-
     Schemata for models for use by user.
 servers:
-  - url: "."
+  - url: "https://github.com/raj-open"
 paths: {}
 components:
   schemas:

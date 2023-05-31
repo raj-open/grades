@@ -66,6 +66,7 @@ def represent_data(
     '''
     case_as_dict = case_to_kwargs(case);
     fig, axs = output_plot(data=data, **case_as_dict);
+
     if show_stats:
         output_stats(data=data, **case_as_dict);
     return fig, axs;

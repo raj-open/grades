@@ -3,7 +3,7 @@
 <a name="documentation-for-api-endpoints"></a>
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://.*
+All URIs are relative to *https://github.com/raj-open*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
